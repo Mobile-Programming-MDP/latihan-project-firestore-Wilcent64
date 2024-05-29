@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:notes/models/note.dart';
 import 'package:notes/services/note_service.dart';
 import 'package:notes/widgets/note_dialog.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NoteListScreen extends StatefulWidget {
   const NoteListScreen({super.key});
@@ -83,14 +85,34 @@ class NoteList extends StatelessWidget {
                         },
                         title: Text(document.title),
                         subtitle: Text(document.description),
-                        trailing: InkWell(
-                          onTap: () {
-                            showAlertDialog(context, document);
-                          },
-                          child: const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                            child: Icon(Icons.delete),
-                          ),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                String url =
+                                    "https://www.google.com/maps/search/?api=1&query=${document!.lat},${document!.lng}";
+                                Uri uri = Uri.parse(url);
+                                _launchUrl(uri);
+                              },
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 10),
+                                child: Icon(Icons.map),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                showAlertDialog(context, document);
+                              },
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 10),
+                                child: Icon(Icons.delete),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -101,6 +123,12 @@ class NoteList extends StatelessWidget {
         }
       },
     );
+  }
+
+  Future<void> _launchUrl(url) async {
+    if (!await launchUrl(url)) {
+      throw Exception('Could Not Launch $url');
+    }
   }
 
   showAlertDialog(BuildContext context, Note document) {
