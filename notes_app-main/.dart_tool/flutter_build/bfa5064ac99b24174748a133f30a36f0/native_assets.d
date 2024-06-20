@@ -1,0 +1,1 @@
+ D:\\Samuel\\Sems\ 4\\PAB\ 2\\firebase\\latihan-project-firestore-ThePied\\notes_app-main\\.dart_tool\\flutter_build\\bfa5064ac99b24174748a133f30a36f0\\native_assets.yaml: 
